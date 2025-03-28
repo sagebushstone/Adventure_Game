@@ -52,7 +52,9 @@ class Player(Sprite):
                             self.beerLocs.remove(beer)
 
             return
-            
+        
+        if (self.x // 32, self.y // 32) != (10, 11):
+            self.showEndGameMsg = False;
 
         if not self.moving and (self.x // 32, self.y // 32) == (10, 12):
             self.game.toggle_screen("ending")
