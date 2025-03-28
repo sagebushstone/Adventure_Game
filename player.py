@@ -1,4 +1,5 @@
 import math
+from os import path
 import pygame
 from sprite import RiddleDoor, Door, Sprite
 from input import is_key_pressed
@@ -129,7 +130,7 @@ class Player(Sprite):
 
     def drawMsg(self):
         if self.showMessage:
-            font = pygame.font.Font("fonts/ByteBounce.ttf", 25)
+            font = pygame.font.Font(path.join(self.game.font_folder, "ByteBounce.ttf"), 25)
             pygame.draw.rect(self.game.screen, (199, 186, 160), pygame.Rect(25, 9*32 - 5, 32*10 + 14, 32*2 + 10))
             pygame.draw.rect(self.game.screen, (255, 252, 219), pygame.Rect(32, 9*32, 32*10, 32*2))
             text = font.render("You found a riddle!", True, (50, 40, 15))
@@ -139,13 +140,13 @@ class Player(Sprite):
 
     def npcMsgCue(self):
         if self.showNPCmsg:
-            font = pygame.font.Font("fonts/ByteBounce.ttf", 25)
+            font = pygame.font.Font(path.join(self.game.font_folder, "ByteBounce.ttf"), 25)
             text = font.render("Press e to talk to the NPC", True, (255, 255, 0))
             self.game.screen.blit(text, (25, 160))  # Draw text on screen
 
     def npcMsg(self):
         if self.talkingToNPC:
-            font = pygame.font.Font("fonts/ByteBounce.ttf", 25)
+            font = pygame.font.Font(path.join(self.game.font_folder, "ByteBounce.ttf"), 25)
             pygame.draw.rect(self.game.screen, (199, 186, 160), pygame.Rect(25, 9*32 - 5, 32*10 + 14, 32*2 + 10))
             pygame.draw.rect(self.game.screen, (255, 252, 219), pygame.Rect(32, 9*32, 32*10, 32*2))
             text = font.render("Hello Traveler. Here is a riddle.", True, (50, 40, 15))
@@ -158,7 +159,7 @@ class Player(Sprite):
 
     def endGameMsg(self):
         if self.showEndGameMsg:
-            font = pygame.font.Font("fonts/ByteBounce.ttf", 25)
+            font = pygame.font.Font(path.join(self.game.font_folder, "ByteBounce.ttf"), 25)
             text = font.render("You need 3 beers", True, (255, 255, 0))
             self.game.screen.blit(text, (5*32, 9*32))
             text = font.render("to leave the dungeon", True, (255, 255, 0))

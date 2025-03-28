@@ -15,16 +15,29 @@ class Game():
         self.clock = pg.time.Clock()
         self.load_data()
         self.game_state = "game"
+
+    def get_asset_path(self):
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS  # PyInstaller temp directory
+        else:
+            base_path = path.abspath(path.dirname(__file__))  # Normal script execution
+        return base_path
     
     def load_data(self):
-        game_folder = path.abspath(path.dirname(__file__))
-        img_folder = path.join(game_folder, 'images')
-        map_folder = path.join(game_folder, 'maps')
+        # game_folder = path.abspath(path.dirname(__file__))
+        img_folder = path.join(self.get_asset_path(), 'images')
+        map_folder = path.join(self.get_asset_path(), 'maps')
+        self.font_folder = path.join(self.get_asset_path(), 'fonts')
         self.map = TiledMap(path.join(map_folder, 'dungeonmap.tmx'))
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
-        self.player_img = pg.image.load(path.join(img_folder, "player.png")).convert_alpha()
-        print(img_folder)
+        self.player_img = path.join(img_folder, "player.png")
+        self.beer_img = path.join(img_folder, "beer.png")
+        self.npcSage_img = path.join(img_folder, "npcSage.png")
+        self.npcForrest_img = path.join(img_folder, "npcForrest.png")
+        self.npcMom_img = path.join(img_folder, "npcMom.png")
+        self.npcChickpea_img = path.join(img_folder, "npcChickpea.png")
+        self.npcDuet_img = path.join(img_folder, "npcDuet.png")
         self.parchment_img = pg.image.load(path.join(img_folder, "riddlesBG.png")).convert_alpha()
     
     def new(self):
@@ -40,9 +53,10 @@ class Game():
 
         self.doors = [RiddleDoor(1, 0, "I'm not the alphabet, but I have letters. I'm not a pole, but I have a flag.", pygame.K_k), RiddleDoor(5, 4, "What gets wetter the more it dries?", pygame.K_i), Door(7, 10), RiddleDoor(8, 2, "What word has the most letters in it?", pygame.K_p)]
         
-        self.beers = [Sprite("images/beer.png", 0, 0), Sprite("images/beer.png", 4*32, 10*32), Sprite("images/beer.png", 9*32, 2*32)]
-        self.npcs = [Sprite("images/npcSage.png", 2*32, 7*32)]
-        self.player = Player("images/player.png", 64, 0, self)
+        self.beers = [Sprite(self.beer_img, 0, 0), Sprite(self.beer_img, 4*32, 10*32), Sprite(self.beer_img, 9*32, 2*32)]
+        self.npcs = [Sprite(self.npcSage_img, 2*32, 7*32)]
+        self.player = Player(self.player_img, 64, 0, self)
+        # self.player = Player(self.player_img, 64, 0, self)
     
     def run(self):
         # game loop - set self.playing = False to end the game
@@ -75,9 +89,9 @@ class Game():
     def displayRiddles(self):
         self.screen.fill((207, 202, 177))
         self.screen.blit(self.parchment_img, (0, 0))
-        font = pg.font.Font("fonts/ByteBounce.ttf", 40)
+        font = pg.font.Font(path.join(self.font_folder, "ByteBounce.ttf"), 40)
         text = font.render("RIDDLES COLLECTED", True, (50, 40, 15))
-        font = pg.font.Font("fonts/ByteBounce.ttf", 30)
+        font = pg.font.Font(path.join(self.font_folder, "ByteBounce.ttf"), 30)
         text2 = font.render("(Press tab to exit)", True, (50, 40, 15))
         self.screen.blit(text, (47, 32))
         self.screen.blit(text2, (95, 32+30))
@@ -96,8 +110,8 @@ class Game():
     
     def endingScreen(self):
         self.screen.fill((207, 202, 177))
-        game_folder = path.abspath(path.dirname(__file__))
-        map_folder = path.join(game_folder, 'maps')
+        # game_folder = path.abspath(path.dirname(__file__))
+        map_folder = path.join(self.get_asset_path(), 'maps')
         self.map = TiledMap(path.join(map_folder, 'endingmap.tmx'))
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
@@ -110,7 +124,7 @@ class Game():
         self.player.blockers.clear()
         global sprites
         sprites = [s for s in sprites if isinstance(s, Player)]
-        self.npcs = [Sprite("images/npcSage.png", 7*32, 8*32), Sprite("images/npcForrest.png", 4*32, 4*32), Sprite("images/npcMom.png", 6*32, 3*32), Sprite("images/npcDuet.png", 3*32, 6*32), Sprite("images/npcChickpea.png", 8*32, 5*32)]
+        self.npcs = [Sprite(self.npcSage_img, 7*32, 8*32), Sprite(self.npcForrest_img, 4*32, 4*32), Sprite(self.npcMom_img, 6*32, 3*32), Sprite(self.npcDuet_img, 3*32, 6*32), Sprite(self.npcChickpea_img, 8*32, 5*32)]
         sprites.extend(self.npcs)
         self.player.blockers.extend([npc.getLoc() for npc in self.npcs])
 
@@ -164,7 +178,7 @@ class Game():
             self.screen.blit(self.map_img, (0, 0))  # Ensure ending map is drawn
             for s in sprites:
                 s.draw(self.screen)
-            font = pygame.font.Font("fonts/ByteBounce.ttf", 40)
+            font = pygame.font.Font(path.join(self.font_folder, "ByteBounce.ttf"), 40)
             text = font.render("HAPPY BIRTHDAY!", True, (255, 255, 255))
             self.screen.blit(text, (64, 32))  # Draw text on screen
         pg.display.flip()
