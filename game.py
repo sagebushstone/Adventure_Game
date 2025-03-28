@@ -51,7 +51,7 @@ class Game():
             self.walls.append((i, -1))
         self.walls.append((10, 12))
 
-        self.doors = [RiddleDoor(1, 0, "I'm not the alphabet, but I have letters. I'm not a pole, but I have a flag.", pygame.K_k), RiddleDoor(5, 4, "What gets wetter the more it dries?", pygame.K_i), Door(7, 10), RiddleDoor(8, 2, "What word has the most letters in it?", pygame.K_p)]
+        self.doors = [RiddleDoor(1, 0, "What has many keys but can't open any locks?", pygame.K_k), RiddleDoor(5, 4, "What gets wetter the more it dries?", pygame.K_i), Door(7, 10), RiddleDoor(8, 2, "I'm not the alphabet, but I have letters. I'm not a pole, but I have a flag. What am I?", pygame.K_p)]
         
         self.beers = [Sprite(self.beer_img, 0, 0), Sprite(self.beer_img, 4*32, 10*32), Sprite(self.beer_img, 9*32, 2*32)]
         self.npcs = [Sprite(self.npcSage_img, 2*32, 7*32)]
