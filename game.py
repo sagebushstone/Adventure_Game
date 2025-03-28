@@ -11,7 +11,7 @@ class Game():
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((384, 384))
-        pg.display.set_caption("Adventure Game")
+        pg.display.set_caption("HAPPY BIRTHDAY!!!")
         self.clock = pg.time.Clock()
         self.load_data()
         self.game_state = "game"
